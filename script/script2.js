@@ -18,6 +18,8 @@ let sec = 0
 
 //title
 let title = window.document.getElementById('title')
+let sessionName = window.document.getElementById('sessionName')
+
 
 //notificaçao
 let som = window.document.getElementById('som')
@@ -36,6 +38,7 @@ function runSession(){
     btn_session.style.background = '#4db6ac'
     btn_break.style.background = 'white'
     btn_longBreak.style.background = 'white'
+    sessionName.innerText = 'Session'
 }
 
 function runBreak(){
@@ -47,6 +50,7 @@ function runBreak(){
     btn_break.style.background = '#4db6ac'
     btn_session.style.background = 'white'
     btn_longBreak.style.background = 'white'
+    sessionName.innerText = 'Break'
 }
 
 function runLongBreak(){
@@ -58,6 +62,7 @@ function runLongBreak(){
     btn_longBreak.style.background = '#4db6ac'
     btn_break.style.background = 'white'
     btn_session.style.background = 'white'
+    sessionName.innerText = 'Long Break'
 }
 
 function start(){
@@ -129,20 +134,25 @@ function runTimer(min, sec){
             min = 0 
             sec = 0
             second.innerHTML = sec < 10 ? '0'+sec : sec
+            btn_start.removeAttribute('disabled', 'disabled')
+            btn_restart.setAttribute('disabled', 'disabled')
+            btn_stop.setAttribute('disabled', 'disabled')
             som.play()
         }
-    }, 1)
+    }, 1000)
 }
 
 function sessionAuto(){
+        sessionName.innerText = 'Session'
+        btn_session.style.background = '#4db6ac'
+        btn_break.style.background = 'white'
+
         id_interval_sessionAuto = setInterval(function(){
     
         second.innerHTML = sec < 10 ? '0'+sec : sec
         minute.innerHTML = min < 10 ? '0'+min : min 
         title.innerHTML = `(${minute.innerHTML = min < 10 ? '0'+min : min} Pomodoro Timer)`
         
-        btn_session.style.background = '#4db6ac'
-        btn_break.style.background = 'white'
        
         if(sec < 59){
             sec += 1
@@ -159,17 +169,18 @@ function sessionAuto(){
             som.play()
             breakAuto()
         }
-    }, 1)  
+    }, 1000)  
 }
 function breakAuto(){
+    btn_break.style.background = '#4db6ac'
+    btn_session.style.background = 'white'
+    sessionName.innerText = 'Break'
+
     let id_intervalBreakAuto = setInterval(function(){
         second.innerHTML = sec < 10 ? '0'+sec : sec
         minute.innerHTML = min < 10 ? '0'+min : min
         title.innerHTML = `(${minute.innerHTML = min < 10 ? '0'+min : min} Pomodoro Timer)`
-        btn_break.style.background = '#4db6ac'
-        btn_session.style.background = 'white'
-
-
+      
         if(sec < 59){
             sec += 1
         }else if(min > 0){
@@ -182,9 +193,12 @@ function breakAuto(){
             second.innerHTML = sec < 10 ? '0'+sec : sec
             som.play()
             btn_start.removeAttribute('disabled', 'disabled')
+            btn_stop.setAttribute('disabled', 'disabled')
+            btn_restart.setAttribute('disabled', 'disabled')
             btn_session.style.background = '#4db6ac'
             btn_break.style.background = 'white'
+            sessionName.innerText = 'Session'
             clearInterval(id_intervalBreakAuto)
         }
-    }, 1)
+    }, 1000)
 }
